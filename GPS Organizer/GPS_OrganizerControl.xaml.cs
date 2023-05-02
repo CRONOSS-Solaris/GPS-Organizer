@@ -32,7 +32,6 @@ namespace GPS_Organizer
         private void AddGpsDialog_GpsDataAdded(object sender, GpsDataEventArgs e)
         {
             // Dodaj nowy GPS do listy, używając danych z e.GpsData
-            // Na przykład:
             var gpsData = e.GpsData;
             _plugin.AddGPSMarker(gpsData.Name, gpsData.Coords, gpsData.Description);
         }
