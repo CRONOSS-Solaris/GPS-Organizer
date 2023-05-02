@@ -8,7 +8,6 @@ namespace GPS_Organizer
     public class GPS_OrganizerCommands : CommandModule
     {
 
-        public GPS_Organizer Plugin => (GPS_Organizer)Context.Plugin;
 
         [Command("test", "This is a Test Command.")]
         [Permission(MyPromoteLevel.Moderator)]
