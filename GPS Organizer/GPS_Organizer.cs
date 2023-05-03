@@ -31,7 +31,7 @@ namespace GPS_Organizer
 
         private Persistent<GPS_OrganizerMarkersConfig> _markersConfig;
         public GPS_OrganizerMarkersConfig Markers => _markersConfig?.Data;
-        private GpsHandler _gpsHandler;
+        public GpsHandler _gpsHandler;
 
         public override void Init(ITorchBase torch)
         {
@@ -68,7 +68,7 @@ namespace GPS_Organizer
             }
         }
 
-        private void SetupConfig()
+        public void SetupConfig()
         {
             var configFile = Path.Combine(StoragePath, CONFIG_FILE_NAME);
 
