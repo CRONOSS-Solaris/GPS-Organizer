@@ -149,10 +149,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GPS Organizer\GpsHandler.cs" />
-    <Compile Include="GPS Organizer\AddGpsDialog.xaml.cs">
+    <Compile Include="GPS Organizer\Torch GUI\AddGpsDialog.xaml.cs">
       <DependentUpon>AddGpsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GPS Organizer\GPS_OrganizerControl.xaml.cs">
+    <Compile Include="GPS Organizer\Torch GUI\GPS_OrganizerControl.xaml.cs">
       <DependentUpon>GPS_OrganizerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="GPS Organizer\GPS_OrganizerMarkersConfig.cs" />
@@ -183,11 +183,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="GPS Organizer\AddGpsDialog.xaml">
+    <Page Include="GPS Organizer\Torch GUI\AddGpsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GPS Organizer\GPS_OrganizerControl.xaml">
+    <Page Include="GPS Organizer\Torch GUI\GPS_OrganizerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

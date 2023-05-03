@@ -59,6 +59,15 @@ namespace GPS_Organizer
 
             Close();
         }
+
+        private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Adjust window height based on DescriptionTextBox content
+            if (DescriptionTextBox.LineCount > 1)
+            {
+                this.Height = MinHeight + (DescriptionTextBox.LineCount - 1) * DescriptionTextBox.FontSize;
+            }
+        }
     }
 
     public class GpsDataEventArgs : EventArgs

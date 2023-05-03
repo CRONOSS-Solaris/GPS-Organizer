@@ -12,6 +12,7 @@ using Torch.API.Plugins;
 using Torch.API.Session;
 using Torch.Session;
 using VRageMath;
+using Torch.Commands;
 
 namespace GPS_Organizer
 {
