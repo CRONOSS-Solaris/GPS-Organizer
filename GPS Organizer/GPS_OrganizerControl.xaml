@@ -9,7 +9,7 @@
         <Button x:Name="AddGpsButton" Content="Add GPS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="AddGpsButton_Click"/>
         <Button x:Name="EditGpsButton" Content="Edit GPS" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" Click="EditGpsButton_Click"/>
         <Button x:Name="DeleteGpsButton" Content="Delete GPS" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="100" Click="DeleteGpsButton_Click"/>
-        <Button x:Name="SupportButton" Content="Support" HorizontalAlignment="Left" Margin="690,10,0,0" VerticalAlignment="Top" Width="100" Click="SupportButton_Click"/>
+        <Button x:Name="SupportButton" Content="Support" Margin="325,10,0,0" VerticalAlignment="Top" Click="SupportButton_Click" HorizontalAlignment="Left" Width="100"/>
 
 
         <ListBox x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}">
