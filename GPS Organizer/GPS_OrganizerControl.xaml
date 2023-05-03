@@ -6,23 +6,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <Button x:Name="AddGpsButton" Content="Add GPS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="AddGpsButton_Click"/>
+        <Button x:Name="EditGpsButton" Content="Edit GPS" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" Click="EditGpsButton_Click"/>
+        <Button x:Name="DeleteGpsButton" Content="Delete GPS" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="100" Click="DeleteGpsButton_Click"/>
+        <Button x:Name="SupportButton" Content="Support" Margin="325,10,0,0" VerticalAlignment="Top" Click="SupportButton_Click" HorizontalAlignment="Left" Width="100"/>
 
-        <Button x:Name="AddGpsButton" Content="ADD GPS" Grid.Column="0" Margin="10" Click="AddGpsButton_Click"/>
-        <Button x:Name="EditGpsButton" Content="EDIT GPS" Grid.Column="1" Margin="10" Click="EditGpsButton_Click"/>
-        <Button x:Name="DeleteGpsButton" Content="DELETE GPS" Grid.Column="2" Margin="10" Click="DeleteGpsButton_Click"/>
-        <Button x:Name="SupportButton" Content="SUPPORT" Grid.Column="3" Margin="10" Click="SupportButton_Click"/>
 
-        <ListBox x:Name="GpsListBox" Grid.Row="1" Grid.ColumnSpan="4" Margin="10" ItemsSource="{Binding}">
+        <ListBox x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
