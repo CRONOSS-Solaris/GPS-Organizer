@@ -1,5 +1,4 @@
-﻿using GPS_Organizer.GPS_Organizer;
-using NLog;
+﻿using NLog;
 using Sandbox.Game.Screens.Helpers;
 using Sandbox.Game.World;
 using System;
@@ -72,7 +71,6 @@ namespace GPS_Organizer
         public void SetupConfig()
         {
             var configFile = Path.Combine(StoragePath, CONFIG_FILE_NAME);
-
             try
             {
                 _config = Persistent<GPS_OrganizerConfig>.Load(configFile);
@@ -99,7 +97,6 @@ namespace GPS_Organizer
             {
                 Log.Warn(e);
             }
-
             if (_markersConfig?.Data == null)
             {
                 Log.Info("Create Default Markers Config, because none was found!");
