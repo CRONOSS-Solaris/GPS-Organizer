@@ -22,7 +22,7 @@ namespace GPS_Organizer
 
         private static readonly string CONFIG_FILE_NAME = "GPS_OrganizerConfig.cfg";
         private static readonly string CONFIG_FILE_MARKERS = "GPS_OrganizerMarkers.cfg";
-
+        private IMultiplayerManagerBase _multibase;
         private GPS_OrganizerControl _control;
         public UserControl GetControl() => _control ?? (_control = new GPS_OrganizerControl(this));
 
@@ -55,11 +55,15 @@ namespace GPS_Organizer
             {
 
                 case TorchSessionState.Loaded:
-                    Log.Info("Session Loaded!");
+                    _multibase = Torch.CurrentSession.Managers.GetManager<IMultiplayerManagerBase>();
+                    if (_multibase != null)
+                        _multibase.PlayerJoined += multibase_PlayerJoined;
+                    else
+                        Log.Warn("No multiplayer manager loaded!");
                     break;
-
                 case TorchSessionState.Unloading:
-                    Log.Info("Session Unloading!");
+                    if (_multibase != null)
+                        _multibase.PlayerJoined -= multibase_PlayerJoined;
                     break;
             }
         }
@@ -112,13 +116,15 @@ namespace GPS_Organizer
             try
             {
                 _config.Save();
-                Log.Info("Configuration Saved.");
+                _markersConfig.Save();
+                Log.Info("Configuration and Markers Saved.");
             }
             catch (IOException e)
             {
-                Log.Warn(e, "Configuration failed to save");
+                Log.Warn(e, "Configuration and Markers failed to save");
             }
         }
+
 
         private void multibase_PlayerJoined(IPlayer obj)
         {

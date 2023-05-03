@@ -1,12 +1,16 @@
 ﻿<Window x:Class="GPS_Organizer.AddGpsDialog"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300">
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+         mc:Ignorable="d" 
+         d:DesignHeight="250" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,11 +21,21 @@
         <TextBox Grid.Row="1" x:Name="NameTextBox" />
 
         <Label Grid.Row="2" Content="Współrzędne" />
-        <TextBox Grid.Row="3" x:Name="CoordsTextBox" />
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" x:Name="XCoordTextBox" />
+            <TextBox Grid.Column="1" x:Name="YCoordTextBox" />
+            <TextBox Grid.Column="2" x:Name="ZCoordTextBox" />
+        </Grid>
 
         <Label Grid.Row="4" Content="Opis" />
         <TextBox Grid.Row="5" x:Name="DescriptionTextBox" />
 
-        <Button Grid.Row="3" x:Name="SaveButton" Content="Zapisz" Click="SaveButton_Click" Margin="0,57,0,0"/>
+        <Button Grid.Row="6" x:Name="SaveButton" Content="Zapisz" Click="SaveButton_Click" HorizontalAlignment="Center" Margin="0,10,0,0"/>
     </Grid>
 </Window>
