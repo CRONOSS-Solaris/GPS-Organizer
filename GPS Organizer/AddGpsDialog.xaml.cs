@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using VRage.Plugins;
 using VRageMath;
+using System.Linq;
 
 namespace GPS_Organizer
 {
@@ -9,6 +11,8 @@ namespace GPS_Organizer
     {
         public event EventHandler<GpsDataEventArgs> GpsDataAdded;
         public event EventHandler<GpsDataEventArgs> GpsDataUpdated;
+        private GpsOrganizerPlugin _plugin;
+
 
         private MyGpsEntry _selectedGps;
 
@@ -38,6 +42,14 @@ namespace GPS_Organizer
                 !double.TryParse(ZCoordTextBox.Text, out z))
             {
                 MessageBox.Show("Invalid coordinates input. Please enter valid numbers.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Sprawdź, czy GPS o takiej nazwie już istnieje na liście punktów GPS.
+            bool gpsExists = _plugin.Markers.Entries.Any(entry => entry.Name.Equals(NameTextBox.Text, StringComparison.OrdinalIgnoreCase) && (_selectedGps == null || entry != _selectedGps));
+            if (gpsExists)
+            {
+                MessageBox.Show($"GPS marker with the name '{NameTextBox.Text}' already exists.", "Duplicate GPS Name", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

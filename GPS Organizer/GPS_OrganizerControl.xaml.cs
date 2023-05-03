@@ -46,10 +46,19 @@ namespace GPS_Organizer
             if (GpsListBox.SelectedItem == null) return;
 
             var selectedGps = GpsListBox.SelectedItem as MyGpsEntry;
-            _plugin.Markers.Entries.Remove(selectedGps);
-            _plugin.Save();
-            RefreshGpsList();
+
+            // Wyświetl okno dialogowe z pytaniem o potwierdzenie usunięcia GPS.
+            var result = MessageBox.Show($"You definitely want to remove this GPS: {selectedGps.Name}?", "Remove GPS", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            // Usuń GPS tylko wtedy, gdy użytkownik potwierdził usunięcie.
+            if (result == MessageBoxResult.Yes)
+            {
+                _plugin.Markers.Entries.Remove(selectedGps);
+                _plugin.Save();
+                RefreshGpsList();
+            }
         }
+
 
         private void SupportButton_Click(object sender, RoutedEventArgs e)
         {
