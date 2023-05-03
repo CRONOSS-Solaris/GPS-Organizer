@@ -50,23 +50,5 @@ namespace GPS_Organizer
                 MyAPIGateway.Session?.GPS.AddGps(identityId, gps);
             }
         }
-
-        public void AddGpsMarker(string name, string description, Vector3D coords)
-        {
-            var gpsMarker = new MyGpsEntry
-            {
-                Name = name,
-                Description = description,
-                Coords = coords,
-                ShowOnHud = true,
-                Color = new Color(27, 220, 220, 255),
-                EntityId = 0,
-                IsObjective = false,
-                ContractId = 0,
-                DisplayName = name
-            };
-
-            _markersConfig.Entries.Add(gpsMarker);
-        }
     }
 }
