@@ -28,6 +28,7 @@ namespace GPS_Organizer
                 ShowOnHudCheckBox.IsChecked = selectedGps.ShowOnHud;
                 AlwaysVisibleCheckBox.IsChecked = selectedGps.AlwaysVisible;
                 IsObjectiveCheckBox.IsChecked = selectedGps.IsObjective;
+                EntityIdTextBox.Text = selectedGps.EntityId.ToString();
             }
             else // if adding a new GPS entry
             {
@@ -48,6 +49,12 @@ namespace GPS_Organizer
                 return;
             }
 
+            if (!long.TryParse(EntityIdTextBox.Text, out long entityId))
+            {
+                MessageBox.Show("Invalid Entity ID input. Please enter a valid number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             var gpsData = new GpsData
             {
                 Name = NameTextBox.Text,
@@ -55,7 +62,8 @@ namespace GPS_Organizer
                 Coords = new Vector3D(x, y, z),
                 ShowOnHud = ShowOnHudCheckBox.IsChecked.GetValueOrDefault(),
                 AlwaysVisible = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
-                IsObjective = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault()
+                IsObjective = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
+                EntityId = entityId,
             };
 
             if (_selectedGps == null)
@@ -98,5 +106,6 @@ namespace GPS_Organizer
         public bool ShowOnHud { get; set; }
         public bool AlwaysVisible { get; set; }
         public bool IsObjective { get; set; }
+        public long EntityId { get; set; }
     }
 }

@@ -83,7 +83,8 @@ namespace GPS_Organizer
                 Coords = e.GpsData.Coords,
                 ShowOnHud = e.GpsData.ShowOnHud,
                 AlwaysVisible = e.GpsData.AlwaysVisible,
-                IsObjective = e.GpsData.IsObjective
+                IsObjective = e.GpsData.IsObjective,
+                EntityId = e.GpsData.EntityId,
             };
 
             // Dodaj zaktualizowany wpis do listy
@@ -100,7 +101,7 @@ namespace GPS_Organizer
             // Dodaj nowy GPS do listy, używając danych z e.GpsData
             // Na przykład:
             var gpsData = e.GpsData;
-            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud, gpsData.AlwaysVisible, gpsData.IsObjective);
+            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud, gpsData.AlwaysVisible, gpsData.IsObjective, gpsData.EntityId);
             _plugin.Save();
         }
 
