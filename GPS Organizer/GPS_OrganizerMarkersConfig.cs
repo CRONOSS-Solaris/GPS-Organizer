@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Torch;
-using VRage.Collections;
 
 namespace GPS_Organizer
 {
@@ -12,5 +7,10 @@ namespace GPS_Organizer
     {
         private ObservableCollection<MyGpsEntry> _entries = new ObservableCollection<MyGpsEntry>();
         public ObservableCollection<MyGpsEntry> Entries { get => _entries; set => SetValue(ref _entries, value); }
+
+        public GPS_OrganizerMarkersConfig()
+        {
+            Entries.CollectionChanged += (sender, args) => OnPropertyChanged();
+        }
     }
 }

@@ -80,7 +80,8 @@ namespace GPS_Organizer
             {
                 Name = e.GpsData.Name,
                 Description = e.GpsData.Description,
-                Coords = e.GpsData.Coords
+                Coords = e.GpsData.Coords,
+                ShowOnHud = e.GpsData.ShowOnHud
             };
 
             // Dodaj zaktualizowany wpis do listy
@@ -97,7 +98,7 @@ namespace GPS_Organizer
             // Dodaj nowy GPS do listy, używając danych z e.GpsData
             // Na przykład:
             var gpsData = e.GpsData;
-            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords);
+            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud);
             _plugin.Save();
         }
 
