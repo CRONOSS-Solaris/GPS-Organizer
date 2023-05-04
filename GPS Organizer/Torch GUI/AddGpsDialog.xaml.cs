@@ -35,12 +35,20 @@ namespace GPS_Organizer
             else // if adding a new GPS entry
             {
                 ShowOnHudCheckBox.IsChecked = true; // set ShowOnHud to true by default
+                EntityIdTextBox.Text = "0";
+                ContractIdTextBox.Text = "0";
             }
         }
 
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(NameTextBox.Text))
+            {
+                MessageBox.Show("Please enter a name.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             double x, y, z;
 
             if (!double.TryParse(XCoordTextBox.Text, out x) ||
