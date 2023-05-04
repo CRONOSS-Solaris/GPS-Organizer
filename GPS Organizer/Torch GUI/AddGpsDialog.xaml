@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         mc:Ignorable="d" 
         SizeToContent="WidthAndHeight"
-        MinHeight="300"
+        MinHeight="400"
         Width="400">
     <Window.Resources>
         <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
@@ -118,6 +118,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -137,12 +138,13 @@
         <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="ZCoordTextBox" Margin="0,0,10,10" Grid.Row="4" Grid.Column="1" FontSize="14" VerticalContentAlignment="Center"/>
 
         <CheckBox x:Name="ShowOnHudCheckBox" Grid.Row="5" Grid.Column="0" Content="SHOW ON HUD" Margin="10,10,10,10" FontSize="14" FontWeight="Bold" />
-        <CheckBox x:Name="AlwaysVisibleCheckBox" Grid.Row="5" Grid.Column="1" Content="ALWAYS VISIBLE" Margin="10,10,10,10" FontSize="14" FontWeight="Bold" />
+        <CheckBox x:Name="AlwaysVisibleCheckBox" Grid.Row="5" Grid.Column="1" Content="ALWAYS VISIBLE" Margin="10,10,117,10" FontSize="14" FontWeight="Bold" />
+        <CheckBox x:Name="IsObjectiveCheckBox" Grid.Row="5" Grid.Column="1" Content="IS OBJECTIVE" Margin="144,10,0,10" FontSize="14" FontWeight="Bold" />
 
 
-        <Label Content="DESCRIPTION:" Margin="10,10,10,10" Grid.Row="6" Grid.Column="0" FontSize="14" FontWeight="Bold" />
-        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="DescriptionTextBox" Margin="0,0,10,0" Grid.Row="6" Grid.Column="1" FontSize="14" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="DescriptionTextBox_TextChanged" />
+        <Label Content="DESCRIPTION:" Margin="10,10,10,10" Grid.Row="7" Grid.Column="0" FontSize="14" FontWeight="Bold" />
+        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="DescriptionTextBox" Margin="0,0,10,0" Grid.Row="7" Grid.Column="1" FontSize="14" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="DescriptionTextBox_TextChanged" />
 
-        <Button Style="{DynamicResource ButtonStyle1}" Grid.Row="7" Grid.Column="1" x:Name="SaveButton" Content="SAVE GPS" FontSize="14" Click="SaveButton_Click" HorizontalAlignment="Left" Margin="179,12,0,10" Width="80" FontWeight="Bold"/>
+        <Button Style="{DynamicResource ButtonStyle1}" Grid.Row="8" Grid.Column="1" x:Name="SaveButton" Content="SAVE GPS" FontSize="14" Click="SaveButton_Click" HorizontalAlignment="Left" Margin="166,62,0,-40" Width="80" FontWeight="Bold"/>
     </Grid>
 </Window>
