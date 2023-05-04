@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
 using VRageMath;
@@ -29,6 +30,7 @@ namespace GPS_Organizer
                 AlwaysVisibleCheckBox.IsChecked = selectedGps.AlwaysVisible;
                 IsObjectiveCheckBox.IsChecked = selectedGps.IsObjective;
                 EntityIdTextBox.Text = selectedGps.EntityId.ToString();
+                ContractIdTextBox.Text = selectedGps.ContractId.ToString();
             }
             else // if adding a new GPS entry
             {
@@ -55,6 +57,12 @@ namespace GPS_Organizer
                 return;
             }
 
+            if (!long.TryParse(ContractIdTextBox.Text, out long contractId))
+            {
+                MessageBox.Show("Invalid Contract ID input. Please enter a valid number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             var gpsData = new GpsData
             {
                 Name = NameTextBox.Text,
@@ -64,6 +72,7 @@ namespace GPS_Organizer
                 AlwaysVisible = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
                 IsObjective = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
                 EntityId = entityId,
+                ContractId = contractId,
             };
 
             if (_selectedGps == null)
@@ -107,5 +116,6 @@ namespace GPS_Organizer
         public bool AlwaysVisible { get; set; }
         public bool IsObjective { get; set; }
         public long EntityId { get; set; }
+        public long ContractId { get; set; }
     }
 }

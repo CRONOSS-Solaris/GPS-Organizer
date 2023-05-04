@@ -138,7 +138,7 @@ namespace GPS_Organizer
                 _gpsHandler.SendGPSMarkers(idendity);
         }
 
-        public void AddGPSMarker(string name, string description, Vector3D coords, bool ShowOnHud, bool AlwaysVisible, bool IsObjective, long EntityId)
+        public void AddGPSMarker(string name, string description, Vector3D coords, bool ShowOnHud, bool AlwaysVisible, bool IsObjective, long EntityId, long ContractId)
         {
             var gpsMarker = new MyGpsEntry
             {
