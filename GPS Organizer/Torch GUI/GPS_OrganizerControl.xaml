@@ -4,120 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             Height="450" Width="800">
+             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="ListBox.Static.Background" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FFABADB3"/>
-        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
-        <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
-            <Setter Property="Background" Value="{StaticResource ListBox.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ListBox.Static.Border}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBox}">
-                        <Border x:Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" Padding="1" SnapsToDevicePixels="true" CornerRadius="8,8,8,8" Background="#FF989898" BorderBrush="Black">
-                            <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" OpacityMask="Black"/>
-                            </ScrollViewer>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Border}"/>
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsGrouping" Value="true"/>
-                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                            </MultiTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true" CornerRadius="8,8,8,8">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="White">
-        <Button Style="{DynamicResource ButtonStyle1}" x:Name="AddGpsButton" Content="ADD GPS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="AddGpsButton_Click" FontWeight="Bold"/>
-        <Button Style="{DynamicResource ButtonStyle1}" x:Name="EditGpsButton" Content="EDIT GPS" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" Click="EditGpsButton_Click" FontWeight="Bold"/>
-        <Button Style="{DynamicResource ButtonStyle1}" x:Name="DeleteGpsButton" Content="DELETE GPS" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="100" Click="DeleteGpsButton_Click" FontWeight="Bold"/>
-        <Button Style="{DynamicResource ButtonStyle1}" x:Name="SupportButton" Content="SUPPORT" Margin="325,10,0,0" VerticalAlignment="Top" Click="SupportButton_Click" HorizontalAlignment="Left" Width="100" FontWeight="Bold"/>
+        <Button Style="{StaticResource ButtonStyle1}" x:Name="AddGpsButton" Content="ADD GPS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="AddGpsButton_Click" FontWeight="Bold"/>
+        <Button Style="{StaticResource ButtonStyle1}" x:Name="EditGpsButton" Content="EDIT GPS" HorizontalAlignment="Left" Margin="115,10,0,0" VerticalAlignment="Top" Width="100" Click="EditGpsButton_Click" FontWeight="Bold"/>
+        <Button Style="{StaticResource ButtonStyle1}" x:Name="DeleteGpsButton" Content="DELETE GPS" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="100" Click="DeleteGpsButton_Click" FontWeight="Bold"/>
+        <Button Style="{StaticResource ButtonStyle1}" x:Name="SupportButton" Content="SUPPORT" Margin="325,10,0,0" VerticalAlignment="Top" Click="SupportButton_Click" HorizontalAlignment="Left" Width="100" FontWeight="Bold"/>
+
+        <Label Content="SEND MARKER ON JOIN PLAYER:" HorizontalAlignment="Left" Margin="434,6,0,0" VerticalAlignment="Top" Height="28" FontSize="14" Width="230" FontWeight="Bold"/>
+        <ToggleButton x:Name="SendMarkerOnJoinToggleButton" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle1}" Checked="SendMarkerOnJoinToggleButton_Checked" Unchecked="SendMarkerOnJoinToggleButton_Unchecked" Margin="659,12,0,0" Width="60" Height="20" />
 
 
-        <ListBox Style="{DynamicResource ListBoxStyle1}" x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}">
+        <ListBox Style="{StaticResource ListBoxStyle1}" x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="NAME: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e"/>
-                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0" Foreground="White"/>
-                        <TextBlock Text="COORDS: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e"/>
-                        <TextBlock Text="{Binding Coords}" Margin="0,0,10,0" Foreground="White"/>
-                        <TextBlock Text="DESCRIPTION: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e"/>
+                        <TextBlock Text="NAME: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14"/>
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0" Foreground="White" FontSize="14" />
+                        <TextBlock Text="COORDS: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14" />
+                        <TextBlock Text="{Binding Coords}" Margin="0,0,10,0" Foreground="White" FontSize="14" />
+                        <TextBlock Text="DESCRIPTION: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14" />
                         <TextBlock Text="{Binding Description}" Foreground="White"/>
                     </StackPanel>
                 </DataTemplate>

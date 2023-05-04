@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using VRage.Plugins;
 
 namespace GPS_Organizer
 {
@@ -10,10 +11,14 @@ namespace GPS_Organizer
 
         private GpsOrganizerPlugin _plugin;
 
+        public GPS_OrganizerConfig PluginConfig { get; private set; }
+
+
         public GPS_OrganizerControl(GpsOrganizerPlugin plugin)
         {
             InitializeComponent();
             _plugin = plugin;
+            PluginConfig = plugin.Config;
             RefreshGpsList();
         }
 
@@ -95,6 +100,25 @@ namespace GPS_Organizer
             _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords);
             _plugin.Save();
         }
+
+        private void SendMarkerOnJoinToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (PluginConfig != null)
+            {
+                PluginConfig.SendMarkerOnJoin = true;
+                _plugin.Save();
+            }
+        }
+
+        private void SendMarkerOnJoinToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (PluginConfig != null)
+            {
+                PluginConfig.SendMarkerOnJoin = false;
+                _plugin.Save();
+            }
+        }
+
     }
 
 }

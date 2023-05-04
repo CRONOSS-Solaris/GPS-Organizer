@@ -6,7 +6,7 @@ namespace GPS_Organizer
 {
     public class GPS_OrganizerConfig : ViewModel
     {
-        private bool _sendMarkerOnJoin = true;
+        private bool _sendMarkerOnJoin = false;
         public bool SendMarkerOnJoin { get => _sendMarkerOnJoin; set => SetValue(ref _sendMarkerOnJoin, value); }
     }
 }
