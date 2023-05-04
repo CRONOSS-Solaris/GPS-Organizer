@@ -140,8 +140,8 @@
         <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="ZCoordTextBox" Margin="0,0,10,10" Grid.Row="4" Grid.Column="1" FontSize="14" VerticalContentAlignment="Center"/>
 
         <CheckBox x:Name="ShowOnHudCheckBox" Grid.Row="5" Grid.Column="0" Content="SHOW ON HUD" Margin="10,10,10,10" FontSize="14" FontWeight="Bold" />
-        <CheckBox x:Name="AlwaysVisibleCheckBox" Grid.Row="5" Grid.Column="1" Content="ALWAYS VISIBLE" Margin="10,10,117,10" FontSize="14" FontWeight="Bold" />
-        <CheckBox x:Name="IsObjectiveCheckBox" Grid.Row="5" Grid.Column="1" Content="IS OBJECTIVE" Margin="144,10,0,10" FontSize="14" FontWeight="Bold" />
+        <CheckBox x:Name="AlwaysVisibleCheckBox" Grid.Row="5" Grid.Column="1" Content="ALWAYS VISIBLE" Margin="4,10,123,10" FontSize="14" FontWeight="Bold" />
+        <CheckBox x:Name="IsObjectiveCheckBox" Grid.Row="5" Grid.Column="1" Content="IS OBJECTIVE" Margin="138,10,6,10" FontSize="14" FontWeight="Bold" />
 
         <Label Content="ENTITY ID:" Margin="10,10,10,10" Grid.Row="6" Grid.Column="0" FontSize="14" FontWeight="Bold" />
         <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="EntityIdTextBox" Margin="0,0,10,10" Grid.Row="6" Grid.Column="1" FontSize="14" VerticalContentAlignment="Center"/>

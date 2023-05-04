@@ -103,7 +103,7 @@ namespace GPS_Organizer
             // Dodaj nowy GPS do listy, używając danych z e.GpsData
             // Na przykład:
             var gpsData = e.GpsData;
-            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud, gpsData.AlwaysVisible, gpsData.IsObjective, gpsData.EntityId, gpsData.ContractId);
+            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud, gpsData.AlwaysVisible, gpsData.IsObjective, gpsData.EntityId, gpsData.ContractId, gpsData.Color);
             _plugin.Save();
         }
 
