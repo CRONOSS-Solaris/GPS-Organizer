@@ -67,13 +67,24 @@ namespace GPS_Organizer
 
             var selectedGps = GpsListBox.SelectedItem as MyGpsEntry;
 
-            selectedGps.Name = e.GpsData.Name;
-            selectedGps.Description = e.GpsData.Description;
-            selectedGps.Coords = e.GpsData.Coords;
+            // Usuń stary wpis z listy
+            _plugin.Markers.Entries.Remove(selectedGps);
+
+            // Stwórz nowy wpis z zaktualizowanymi danymi
+            var updatedGps = new MyGpsEntry
+            {
+                Name = e.GpsData.Name,
+                Description = e.GpsData.Description,
+                Coords = e.GpsData.Coords
+            };
+
+            // Dodaj zaktualizowany wpis do listy
+            _plugin.Markers.Entries.Add(updatedGps);
 
             _plugin.Save();
             RefreshGpsList();
         }
+
 
 
         private void AddGpsDialog_GpsDataAdded(object sender, GpsDataEventArgs e)
