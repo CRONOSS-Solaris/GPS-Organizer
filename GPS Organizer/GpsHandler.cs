@@ -39,6 +39,7 @@ namespace GPS_Organizer
                     Description = entry.Description,
                     Coords = entry.Coords,
                     ShowOnHud = entry.ShowOnHud,
+                    AlwaysVisible = entry.AlwaysVisible,
                     GPSColor = entry.Color,
                     EntityId = entry.EntityId,
                     IsObjective = entry.IsObjective,

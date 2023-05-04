@@ -26,6 +26,7 @@ namespace GPS_Organizer
                 YCoordTextBox.Text = selectedGps.Coords.Y.ToString();
                 ZCoordTextBox.Text = selectedGps.Coords.Z.ToString();
                 ShowOnHudCheckBox.IsChecked = selectedGps.ShowOnHud;
+                AlwaysVisibleCheckBox.IsChecked = selectedGps.AlwaysVisible;
             }
             else // if adding a new GPS entry
             {
@@ -51,7 +52,8 @@ namespace GPS_Organizer
                 Name = NameTextBox.Text,
                 Description = DescriptionTextBox.Text,
                 Coords = new Vector3D(x, y, z),
-                ShowOnHud = ShowOnHudCheckBox.IsChecked.GetValueOrDefault()
+                ShowOnHud = ShowOnHudCheckBox.IsChecked.GetValueOrDefault(),
+                AlwaysVisible = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault()
             };
 
             if (_selectedGps == null)
@@ -92,5 +94,6 @@ namespace GPS_Organizer
         public Vector3D Coords { get; set; }
         public string Description { get; set; }
         public bool ShowOnHud { get; set; }
+        public bool AlwaysVisible { get; set; }
     }
 }
