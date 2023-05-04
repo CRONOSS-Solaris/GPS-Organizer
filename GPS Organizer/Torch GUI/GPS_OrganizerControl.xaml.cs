@@ -86,6 +86,7 @@ namespace GPS_Organizer
                 IsObjective = e.GpsData.IsObjective,
                 EntityId = e.GpsData.EntityId,
                 ContractId = e.GpsData.ContractId,
+                Color = e.GpsData.Color,
             };
 
             // Dodaj zaktualizowany wpis do listy

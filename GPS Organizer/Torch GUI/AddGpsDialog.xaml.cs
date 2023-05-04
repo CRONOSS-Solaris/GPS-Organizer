@@ -13,6 +13,18 @@ namespace GPS_Organizer
 
         private MyGpsEntry _selectedGps;
 
+        private void ColorPicker_ColorChanged(object sender, RoutedEventArgs e)
+        {
+            // Pobierz kolor z ColorPicker
+            var mediaColor = ColorPicker.SelectedColor.Value;
+
+            // Konwertuj System.Windows.Media.Color na VRageMath.Color
+            var vrageColor = new VRageMath.Color(mediaColor.R, mediaColor.G, mediaColor.B, mediaColor.A);
+
+            // Przypisz vrageColor do odpowiedniego pola/obiektu w Twoim kodzie
+        }
+
+
         public AddGpsDialog(MyGpsEntry selectedGps)
         {
             InitializeComponent();
@@ -31,6 +43,14 @@ namespace GPS_Organizer
                 IsObjectiveCheckBox.IsChecked = selectedGps.IsObjective;
                 EntityIdTextBox.Text = selectedGps.EntityId.ToString();
                 ContractIdTextBox.Text = selectedGps.ContractId.ToString();
+                ColorPicker.SelectedColor = new System.Windows.Media.Color
+                {
+                    A = _selectedGps.Color.A,
+                    R = _selectedGps.Color.R,
+                    G = _selectedGps.Color.G,
+                    B = _selectedGps.Color.B
+                };
+
             }
             else // if adding a new GPS entry
             {
@@ -81,6 +101,14 @@ namespace GPS_Organizer
                 IsObjective = IsObjectiveCheckBox.IsChecked.GetValueOrDefault(),
                 EntityId = entityId,
                 ContractId = contractId,
+                Color = new VRageMath.Color
+                {
+                    A = ColorPicker.SelectedColor.Value.A,
+                    R = ColorPicker.SelectedColor.Value.R,
+                    G = ColorPicker.SelectedColor.Value.G,
+                    B = ColorPicker.SelectedColor.Value.B
+                }
+
             };
 
             if (_selectedGps == null)
@@ -125,5 +153,7 @@ namespace GPS_Organizer
         public bool IsObjective { get; set; }
         public long EntityId { get; set; }
         public long ContractId { get; set; }
+        public Color Color { get; set; }
+
     }
 }
