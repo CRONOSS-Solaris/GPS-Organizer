@@ -138,7 +138,7 @@ namespace GPS_Organizer
                 _gpsHandler.SendGPSMarkers(idendity);
         }
 
-        public void AddGPSMarker(string name, string description, Vector3D coords, bool ShowOnHud, bool AlwaysVisible, bool IsObjective, long EntityId, long ContractId)
+        public void AddGPSMarker(string name, string description, Vector3D coords, bool ShowOnHud, bool AlwaysVisible, bool IsObjective, long EntityId, long ContractId, Color color)
         {
             var gpsMarker = new MyGpsEntry
             {
@@ -148,7 +148,7 @@ namespace GPS_Organizer
                 IsFinal = false,
                 ShowOnHud = ShowOnHud,
                 AlwaysVisible = AlwaysVisible,
-                Color = new Color(27, 220, 220, 255),
+                Color = color,
                 EntityId = EntityId,
                 IsObjective = IsObjective,
                 ContractId = ContractId,
