@@ -146,12 +146,12 @@ namespace GPS_Organizer
                 Description = description,
                 Coords = coords,
                 IsFinal = false,
-                ShowOnHud = true,
-                AlwaysVisible = false,
+                ShowOnHud = ShowOnHud,
+                AlwaysVisible = AlwaysVisible,
                 Color = new Color(27, 220, 220, 255),
-                EntityId = 0,
-                IsObjective = false,
-                ContractId = 0,
+                EntityId = EntityId,
+                IsObjective = IsObjective,
+                ContractId = ContractId,
                 DisplayName = name
             };
 

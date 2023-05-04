@@ -70,7 +70,7 @@ namespace GPS_Organizer
                 Coords = new Vector3D(x, y, z),
                 ShowOnHud = ShowOnHudCheckBox.IsChecked.GetValueOrDefault(),
                 AlwaysVisible = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
-                IsObjective = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
+                IsObjective = IsObjectiveCheckBox.IsChecked.GetValueOrDefault(),
                 EntityId = entityId,
                 ContractId = contractId,
             };
