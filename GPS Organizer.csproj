@@ -163,7 +163,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GPS Organizer\GpsHandler.cs" />
     <Compile Include="GPS Organizer\Torch GUI\AddGpsDialog.xaml.cs">
       <DependentUpon>AddGpsDialog.xaml</DependentUpon>
     </Compile>
@@ -171,7 +170,6 @@
       <DependentUpon>GPS_OrganizerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="GPS Organizer\GPS_OrganizerMarkersConfig.cs" />
-    <Compile Include="GPS Organizer\MyGpsEntry.cs" />
     <Compile Include="GPS Organizer\Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -188,6 +186,8 @@
     <Compile Include="GPS Organizer\GPS_OrganizerCommands.cs" />
     <Compile Include="GPS Organizer\GPS_OrganizerConfig.cs" />
     <Compile Include="GPS Organizer\GPS_Organizer.cs" />
+    <Compile Include="GPS Organizer\Utils\GpsHandler.cs" />
+    <Compile Include="GPS Organizer\Utils\MyGpsEntry.cs" />
     <EmbeddedResource Include="GPS Organizer\Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -19,8 +19,7 @@
         <Button Style="{StaticResource ButtonStyle1}" x:Name="SupportButton" Content="SUPPORT" Margin="325,10,0,0" VerticalAlignment="Top" Click="SupportButton_Click" HorizontalAlignment="Left" Width="100" FontWeight="Bold"/>
 
         <Label Content="SEND MARKER ON JOIN PLAYER:" HorizontalAlignment="Left" Margin="434,6,0,0" VerticalAlignment="Top" Height="28" FontSize="14" Width="230" FontWeight="Bold"/>
-        <ToggleButton x:Name="SendMarkerOnJoinToggleButton" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle1}" Checked="SendMarkerOnJoinToggleButton_Checked" Unchecked="SendMarkerOnJoinToggleButton_Unchecked" Margin="659,12,0,0" Width="60" Height="20" />
-
+        <ToggleButton x:Name="SendMarkerOnJoinToggleButton" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle1}" Checked="SendMarkerOnJoinToggleButton_Checked" Unchecked="SendMarkerOnJoinToggleButton_Unchecked" Margin="659,12,0,0" Width="60" Height="20" IsChecked="{Binding SendMarkerOnJoin}" />
 
         <ListBox Style="{StaticResource ListBoxStyle1}" x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}">
             <ListBox.ItemTemplate>

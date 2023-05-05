@@ -18,6 +18,7 @@ namespace GPS_Organizer
         {
             InitializeComponent();
             _plugin = plugin;
+            DataContext = _plugin.Config;
             PluginConfig = plugin.Config;
             RefreshGpsList();
         }
