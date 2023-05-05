@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GPS_Organizer.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -10,6 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <local:IndexConverter x:Key="indexConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="White">
@@ -21,10 +22,11 @@
         <Label Content="SEND MARKER ON JOIN PLAYER:" HorizontalAlignment="Left" Margin="434,6,0,0" VerticalAlignment="Top" Height="28" FontSize="14" Width="230" FontWeight="Bold"/>
         <ToggleButton x:Name="SendMarkerOnJoinToggleButton" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle1}" Checked="SendMarkerOnJoinToggleButton_Checked" Unchecked="SendMarkerOnJoinToggleButton_Unchecked" Margin="659,12,0,0" Width="60" Height="20" IsChecked="{Binding SendMarkerOnJoin}" />
 
-        <ListBox Style="{StaticResource ListBoxStyle1}" x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}">
+        <ListBox Style="{StaticResource ListBoxStyle1}" x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}" AlternationCount="1000000">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource indexConverter}}" FontWeight="Bold" Margin="0,0,5,0" Foreground="White" FontSize="14"/>
                         <TextBlock Text="NAME: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14"/>
                         <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0" Foreground="White" FontSize="14" />
                         <TextBlock Text="COORDS: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14" />

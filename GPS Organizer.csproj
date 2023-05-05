@@ -187,6 +187,7 @@
     <Compile Include="GPS Organizer\GPS_OrganizerConfig.cs" />
     <Compile Include="GPS Organizer\GPS_Organizer.cs" />
     <Compile Include="GPS Organizer\Utils\GpsHandler.cs" />
+    <Compile Include="GPS Organizer\Utils\IndexConverter.cs" />
     <Compile Include="GPS Organizer\Utils\MyGpsEntry.cs" />
     <EmbeddedResource Include="GPS Organizer\Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
