@@ -39,11 +39,14 @@
                         <TextBlock Text="COORDS: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14" />
                         <TextBlock Text="{Binding Coords}" Margin="0,0,10,0" Foreground="White" FontSize="14" />
                         <TextBlock Text="DESCRIPTION: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14" />
-                        <TextBlock Text="{Binding Description}" Foreground="White"/>
+                        <TextBlock Text="{Binding Description}" Foreground="White" TextTrimming="CharacterEllipsis" MaxWidth="30">
+                            <TextBlock.ToolTip>
+                                <ToolTip Content="{Binding Description}" />
+                            </TextBlock.ToolTip>
+                        </TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
     </Grid>
 </UserControl>

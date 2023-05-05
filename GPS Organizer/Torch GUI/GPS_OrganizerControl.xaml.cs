@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using VRage.Plugins;
 
 namespace GPS_Organizer
@@ -124,6 +125,66 @@ namespace GPS_Organizer
                 PluginConfig.SendMarkerOnJoin = false;
                 _plugin.Save();
             }
+        }
+
+        private void ListBoxItem_ToolTipOpening(object sender, ToolTipEventArgs e)
+        {
+            ListBoxItem item = sender as ListBoxItem;
+            if (item != null)
+            {
+                TextBlock descriptionTextBlock = FindTextBlockInVisualTree(item, "DESCRIPTION: ");
+                if (descriptionTextBlock != null)
+                {
+                    ToolTip tt = descriptionTextBlock.ToolTip as ToolTip;
+                    if (tt != null)
+                    {
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void ListBoxItem_ToolTipClosing(object sender, ToolTipEventArgs e)
+        {
+            ListBoxItem item = sender as ListBoxItem;
+            if (item != null)
+            {
+                TextBlock descriptionTextBlock = FindTextBlockInVisualTree(item, "DESCRIPTION: ");
+                if (descriptionTextBlock != null)
+                {
+                    ToolTip tt = descriptionTextBlock.ToolTip as ToolTip;
+                    if (tt != null)
+                    {
+                        tt.IsOpen = false;
+                    }
+                }
+            }
+        }
+
+
+        private TextBlock FindTextBlockInVisualTree(DependencyObject parent, string text)
+        {
+            if (parent == null) return null;
+
+            TextBlock foundChild = null;
+
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                TextBlock childOfType = child as TextBlock;
+                if (childOfType != null && childOfType.Text.StartsWith(text))
+                {
+                    foundChild = childOfType;
+                    break;
+                }
+
+                foundChild = FindTextBlockInVisualTree(child, text);
+
+                if (foundChild != null) break;
+            }
+
+            return foundChild;
         }
 
     }
