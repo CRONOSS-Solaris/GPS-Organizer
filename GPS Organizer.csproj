@@ -186,6 +186,7 @@
     <Compile Include="GPS Organizer\GPS_OrganizerCommands.cs" />
     <Compile Include="GPS Organizer\GPS_OrganizerConfig.cs" />
     <Compile Include="GPS Organizer\GPS_Organizer.cs" />
+    <Compile Include="GPS Organizer\Utils\ColorToMediaColorConverter.cs" />
     <Compile Include="GPS Organizer\Utils\GpsHandler.cs" />
     <Compile Include="GPS Organizer\Utils\IndexConverter.cs" />
     <Compile Include="GPS Organizer\Utils\MyGpsEntry.cs" />

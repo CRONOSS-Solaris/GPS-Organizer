@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:IndexConverter x:Key="indexConverter"/>
+            <local:ColorToMediaColorConverter x:Key="colorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="White">
@@ -23,9 +24,15 @@
         <ToggleButton x:Name="SendMarkerOnJoinToggleButton" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle1}" Checked="SendMarkerOnJoinToggleButton_Checked" Unchecked="SendMarkerOnJoinToggleButton_Unchecked" Margin="659,12,0,0" Width="60" Height="20" IsChecked="{Binding SendMarkerOnJoin}" />
 
         <ListBox Style="{StaticResource ListBoxStyle1}" x:Name="GpsListBox" Margin="10,40,10,10" ItemsSource="{Binding}" AlternationCount="1000000">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Height" Value="20"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+                        <Rectangle Width="14" Height="14" Margin="0,0,5,0" Fill="{Binding Color, Converter={StaticResource colorConverter}}" />
                         <TextBlock Text="{Binding (ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource indexConverter}}" FontWeight="Bold" Margin="0,0,5,0" Foreground="White" FontSize="14"/>
                         <TextBlock Text="NAME: " FontWeight="Bold" Margin="0,0,5,0" Foreground="#03045e" FontSize="14"/>
                         <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0" Foreground="White" FontSize="14" />
@@ -37,5 +44,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
     </Grid>
 </UserControl>
