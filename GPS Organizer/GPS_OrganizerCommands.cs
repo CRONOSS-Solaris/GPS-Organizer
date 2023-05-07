@@ -6,6 +6,7 @@ using GPS_Organizer;
 using Torch.Server;
 using System;
 using VRageMath;
+using System.Text;
 
 namespace GPS_Organizer
 {
@@ -64,6 +65,103 @@ namespace GPS_Organizer
 
             // Notify the player that the GPS marker has been added
             RespondWithAuthor($"GPS marker '{name}' has been added with description '{description}'.");
+        }
+
+        [Command("list", "Show the entire list of GPS markers.")]
+        [Permission(MyPromoteLevel.Admin)]
+        public void ListGPSMarkers()
+        {
+            var gpsOrganizerPlugin = (GpsOrganizerPlugin)Context.Plugin;
+            var gpsMarkers = gpsOrganizerPlugin.Markers.Entries;
+
+            if (gpsMarkers.Count == 0)
+            {
+                RespondWithAuthor("There are no GPS markers available.");
+                return;
+            }
+
+            var gpsListBuilder = new StringBuilder();
+            gpsListBuilder.AppendLine("List of GPS markers:");
+
+            for (int i = 0; i < gpsMarkers.Count; i++)
+            {
+                var marker = gpsMarkers[i];
+                gpsListBuilder.AppendLine($"#{i + 1}: Name: {marker.Name}, Description: {marker.Description}, Coords: {marker.Coords}");
+            }
+
+            RespondWithAuthor(gpsListBuilder.ToString());
+        }
+
+        [Command("edit", "Edit a GPS marker.")]
+        [Permission(MyPromoteLevel.Admin)]
+        public void EditGPSMarker(int markerIndex, string newName = null, string newDescription = null, string newColorCode = null, bool? showOnHud = null, bool? alwaysVisible = null, bool? isObjective = null, long? entityId = null, long? contractId = null)
+        {
+            var gpsOrganizerPlugin = (GpsOrganizerPlugin)Context.Plugin;
+            var gpsMarkers = gpsOrganizerPlugin.Markers.Entries;
+
+            if (markerIndex < 1 || markerIndex > gpsMarkers.Count)
+            {
+                RespondWithAuthor("Invalid marker index. Please choose a valid index.");
+                return;
+            }
+
+            var marker = gpsMarkers[markerIndex - 1];
+
+            if (newName != null)
+            {
+                marker.Name = newName;
+                marker.DisplayName = newName;
+            }
+
+            if (newDescription != null)
+            {
+                marker.Description = newDescription;
+            }
+
+            if (newColorCode != null)
+            {
+                Color newColor;
+                try
+                {
+                    newColor = HexToColor(newColorCode);
+                }
+                catch
+                {
+                    RespondWithAuthor($"Invalid color code: {newColorCode}");
+                    return;
+                }
+
+                // Update the marker color
+                marker.Color = newColor;
+            }
+
+            if (showOnHud.HasValue)
+            {
+                marker.ShowOnHud = showOnHud.Value;
+            }
+
+            if (alwaysVisible.HasValue)
+            {
+                marker.AlwaysVisible = alwaysVisible.Value;
+            }
+
+            if (isObjective.HasValue)
+            {
+                marker.IsObjective = isObjective.Value;
+            }
+
+            if (entityId.HasValue)
+            {
+                marker.EntityId = entityId.Value;
+            }
+
+            if (contractId.HasValue)
+            {
+                marker.ContractId = contractId.Value;
+            }
+
+            gpsOrganizerPlugin.Save();
+            RespondWithAuthor($"GPS marker #{markerIndex} has been updated.");
         }
     }
 }
