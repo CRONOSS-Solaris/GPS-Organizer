@@ -155,10 +155,16 @@ namespace GPS_Organizer
                 DisplayName = name
             };
 
-            _markersConfig.Data.Entries.Add(gpsMarker);
-            _control.RefreshGpsList();
+            // Use Dispatcher.Invoke to modify ObservableCollection on the UI thread
+            _control.Dispatcher.Invoke(() =>
+            {
+                _markersConfig.Data.Entries.Add(gpsMarker);
+                _control.RefreshGpsList();
+            });
+
             Save();
         }
+
 
     }
 }
