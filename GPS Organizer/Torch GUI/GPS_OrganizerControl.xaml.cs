@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using VRage.Plugins;
+using static GPS_Organizer.AddGpsDialog;
 
 namespace GPS_Organizer
 {

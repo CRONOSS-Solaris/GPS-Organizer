@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GPS_Organizer.Utils;
+using System;
 using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
 using VRageMath;
+using Xceed.Wpf.Toolkit;
 
 namespace GPS_Organizer
 {
@@ -15,15 +17,9 @@ namespace GPS_Organizer
 
         private void ColorPicker_ColorChanged(object sender, RoutedEventArgs e)
         {
-            // Pobierz kolor z ColorPicker
             var mediaColor = ColorPicker.SelectedColor.Value;
-
-            // Konwertuj System.Windows.Media.Color na VRageMath.Color
             var vrageColor = new VRageMath.Color(mediaColor.R, mediaColor.G, mediaColor.B, mediaColor.A);
-
-            // Przypisz vrageColor do odpowiedniego pola/obiektu w Twoim kodzie
         }
-
 
         public AddGpsDialog(MyGpsEntry selectedGps)
         {
@@ -50,44 +46,40 @@ namespace GPS_Organizer
                     G = _selectedGps.Color.G,
                     B = _selectedGps.Color.B
                 };
-
             }
-            else // if adding a new GPS entry
+            else
             {
-                ShowOnHudCheckBox.IsChecked = true; // set ShowOnHud to true by default
+                ShowOnHudCheckBox.IsChecked = true;
                 EntityIdTextBox.Text = "0";
                 ContractIdTextBox.Text = "0";
             }
         }
 
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(NameTextBox.Text))
             {
-                MessageBox.Show("Please enter a name.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show("Please enter a name.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            double x, y, z;
-
-            if (!double.TryParse(XCoordTextBox.Text, out x) ||
-                !double.TryParse(YCoordTextBox.Text, out y) ||
-                !double.TryParse(ZCoordTextBox.Text, out z))
+            if (!double.TryParse(XCoordTextBox.Text, out double x) ||
+                !double.TryParse(YCoordTextBox.Text, out double y) ||
+                !double.TryParse(ZCoordTextBox.Text, out double z))
             {
-                MessageBox.Show("Invalid coordinates input. Please enter valid numbers.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show("Invalid coordinates input. Please enter valid numbers.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (!long.TryParse(EntityIdTextBox.Text, out long entityId))
             {
-                MessageBox.Show("Invalid Entity ID input. Please enter a valid number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show("Invalid Entity ID input. Please enter a valid number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             if (!long.TryParse(ContractIdTextBox.Text, out long contractId))
             {
-                MessageBox.Show("Invalid Contract ID input. Please enter a valid number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show("Invalid Contract ID input. Please enter a valid number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -108,7 +100,6 @@ namespace GPS_Organizer
                     G = ColorPicker.SelectedColor.Value.G,
                     B = ColorPicker.SelectedColor.Value.B
                 }
-
             };
 
             if (_selectedGps == null)
@@ -125,35 +116,63 @@ namespace GPS_Organizer
 
         private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Adjust window height based on DescriptionTextBox content
             if (DescriptionTextBox.LineCount > 1)
             {
                 this.Height = MinHeight + (DescriptionTextBox.LineCount - 1) * DescriptionTextBox.FontSize;
             }
         }
-    }
 
-    public class GpsDataEventArgs : EventArgs
-    {
-        public GpsData GpsData { get; }
-
-        public GpsDataEventArgs(GpsData gpsData)
+        private void OnParseGpsStringButtonClick(object sender, RoutedEventArgs e)
         {
-            GpsData = gpsData;
+            try
+            {
+                // Get the GPS string from the text box
+                var gpsString = GpsStringInput.Text;
+
+                // Parse the GPS string using the correct class and method
+                var parsedData = OnParseGpsString.ParseGpsString(gpsString);
+
+                // Use the parsed data to populate the fields in the dialog
+                NameTextBox.Text = parsedData.Name;
+                XCoordTextBox.Text = parsedData.XCoord.ToString();
+                YCoordTextBox.Text = parsedData.YCoord.ToString();
+                ZCoordTextBox.Text = parsedData.ZCoord.ToString();
+                ColorPicker.SelectedColor = parsedData.Color;
+            }
+            catch (FormatException ex)
+            {
+                // Handle invalid GPS string format
+                System.Windows.MessageBox.Show("Invalid GPS string format: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle other errors
+                System.Windows.MessageBox.Show("An error occurred while parsing the GPS string: " + ex.Message);
+            }
         }
-    }
 
-    public class GpsData
-    {
-        public string Name { get; set; }
-        public Vector3D Coords { get; set; }
-        public string Description { get; set; }
-        public bool ShowOnHud { get; set; }
-        public bool AlwaysVisible { get; set; }
-        public bool IsObjective { get; set; }
-        public long EntityId { get; set; }
-        public long ContractId { get; set; }
-        public Color Color { get; set; }
 
+        public class GpsDataEventArgs : EventArgs
+        {
+            public GpsData GpsData { get; }
+
+            public GpsDataEventArgs(GpsData gpsData)
+            {
+                GpsData = gpsData;
+            }
+        }
+
+        public class GpsData
+        {
+            public string Name { get; set; }
+            public Vector3D Coords { get; set; }
+            public string Description { get; set; }
+            public bool ShowOnHud { get; set; }
+            public bool AlwaysVisible { get; set; }
+            public bool IsObjective { get; set; }
+            public long EntityId { get; set; }
+            public long ContractId { get; set; }
+            public Color Color { get; set; }
+        }
     }
 }
