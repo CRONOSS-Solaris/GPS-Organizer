@@ -128,7 +128,7 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="NAME:" Margin="10,10,10,10" FontSize="14" FontWeight="Bold"/>
-        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="NameTextBox" FontSize="14" Grid.Row="0" Margin="111,10,10,10" Grid.ColumnSpan="2" VerticalContentAlignment="Center"/>
+        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="NameTextBox" FontSize="14" Grid.Row="0" Margin="0,10,10,10" VerticalContentAlignment="Center" Grid.Column="1"/>
 
         <Label Grid.Row="1" Grid.Column="0" Content="COORDINATES:" FontSize="14" Margin="10,0,10,10" FontWeight="Bold"/>
 
@@ -156,5 +156,8 @@
         <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="DescriptionTextBox" Margin="0,0,10,0" Grid.Row="9" Grid.Column="1" FontSize="14" AcceptsReturn="True" TextWrapping="Wrap" TextChanged="DescriptionTextBox_TextChanged" />
 
         <Button Style="{DynamicResource ButtonStyle1}" Grid.Row="10" Grid.Column="1" x:Name="SaveButton" Content="SAVE GPS" FontSize="14" Click="SaveButton_Click" HorizontalAlignment="Left" Margin="166,13,0,9" Width="80" FontWeight="Bold"/>
+
+        <TextBox Name="GpsStringInput" Height="25" Margin="10" />
+        <Button Name="ParseGpsStringButton" Content="Parse GPS String" Margin="10" Click="OnParseGpsStringButtonClick" />
     </Grid>
 </Window>
