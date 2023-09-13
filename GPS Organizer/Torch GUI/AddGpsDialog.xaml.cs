@@ -175,4 +175,33 @@ namespace GPS_Organizer
             public Color Color { get; set; }
         }
     }
+
+    private void OnParseGpsStringButtonClick(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            // Get the GPS string from the text box
+            var gpsString = GpsStringInput.Text;
+
+            // Parse the GPS string
+            var parsedData = OnParseGpsString.ParseGpsString(gpsString);
+
+            // Use the parsed data to populate the fields in the dialog
+            NameTextBox.Text = parsedData.Name;
+            XCoordTextBox.Text = parsedData.XCoord.ToString();
+            YCoordTextBox.Text = parsedData.YCoord.ToString();
+            ZCoordTextBox.Text = parsedData.ZCoord.ToString();
+            ColorPicker.SelectedColor = parsedData.Color;
+        }
+        catch (FormatException ex)
+        {
+            // Handle invalid GPS string format
+            MessageBox.Show("Invalid GPS string format: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            // Handle other errors
+            MessageBox.Show("An error occurred while parsing the GPS string: " + ex.Message);
+        }
+    }
 }
