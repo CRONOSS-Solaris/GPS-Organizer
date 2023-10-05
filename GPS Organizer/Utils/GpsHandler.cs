@@ -40,6 +40,7 @@ namespace GPS_Organizer
                     Name = entry.Name,
                     Description = entry.Description,
                     Coords = entry.Coords,
+                    DiscardAt = entry.DiscardAt,
                     ShowOnHud = entry.ShowOnHud,
                     AlwaysVisible = entry.AlwaysVisible,
                     GPSColor = entry.Color,
@@ -47,7 +48,7 @@ namespace GPS_Organizer
                     IsObjective = entry.IsObjective,
                     ContractId = entry.ContractId,
                     DisplayName = entry.DisplayName,
-                    //DiscardAt = null
+
                 };
 
 

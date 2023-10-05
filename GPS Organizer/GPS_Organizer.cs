@@ -150,7 +150,7 @@ namespace GPS_Organizer
                 Name = name,
                 Description = description,
                 Coords = coords,
-                IsFinal = false,
+                DiscardAt = null,
                 ShowOnHud = ShowOnHud,
                 AlwaysVisible = AlwaysVisible,
                 Color = color,

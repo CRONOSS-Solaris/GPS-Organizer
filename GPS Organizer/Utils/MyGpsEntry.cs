@@ -12,7 +12,7 @@ namespace GPS_Organizer
         public string Name { get; set; }
         public string Description { get; set; }
         public Vector3D Coords { get; set; }
-        public bool IsFinal { get; set; }
+        public TimeSpan? DiscardAt { get; set; }
         public bool ShowOnHud { get; set; }
         public bool AlwaysVisible { get; set; }
         public Color Color { get; set; }

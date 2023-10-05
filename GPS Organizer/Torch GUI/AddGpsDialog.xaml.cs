@@ -83,6 +83,17 @@ namespace GPS_Organizer
                 return;
             }
 
+            VRageMath.Color vrageColor;
+            if (ColorPicker.SelectedColor.HasValue)
+            {
+                var mediaColor = ColorPicker.SelectedColor.Value;
+                vrageColor = new VRageMath.Color(mediaColor.R, mediaColor.G, mediaColor.B, mediaColor.A);
+            }
+            else
+            {
+                vrageColor = VRageMath.Color.White; // default value or another color you'd like
+            }
+
             var gpsData = new GpsData
             {
                 Name = NameTextBox.Text,
@@ -93,13 +104,7 @@ namespace GPS_Organizer
                 IsObjective = IsObjectiveCheckBox.IsChecked.GetValueOrDefault(),
                 EntityId = entityId,
                 ContractId = contractId,
-                Color = new VRageMath.Color
-                {
-                    A = ColorPicker.SelectedColor.Value.A,
-                    R = ColorPicker.SelectedColor.Value.R,
-                    G = ColorPicker.SelectedColor.Value.G,
-                    B = ColorPicker.SelectedColor.Value.B
-                }
+                Color = vrageColor
             };
 
             if (_selectedGps == null)
