@@ -12,18 +12,19 @@ using Torch.API.Session;
 using Torch.Session;
 using VRageMath;
 using Torch.Commands;
+using GPS_Organizer.Utils;
 
 namespace GPS_Organizer
 {
     public class GpsOrganizerPlugin : TorchPluginBase, IWpfPlugin
     {
-
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly string CONFIG_FILE_NAME = "GPS_OrganizerConfig.cfg";
         private static readonly string CONFIG_FILE_MARKERS = "GPS_OrganizerMarkers.cfg";
         private IMultiplayerManagerBase _multibase;
         private GPS_OrganizerControl _control;
+
         public UserControl GetControl() => _control ?? (_control = new GPS_OrganizerControl(this));
 
         private Persistent<GPS_OrganizerConfig> _config;
@@ -35,31 +36,33 @@ namespace GPS_Organizer
 
         public override void Init(ITorchBase torch)
         {
+            
             base.Init(torch);
-
             SetupConfig();
+            LoggerHelper.DebugLog(Log, _config.Data, "Init() - Start");
 
             var sessionManager = Torch.Managers.GetManager<TorchSessionManager>();
             if (sessionManager != null)
                 sessionManager.SessionStateChanged += SessionChanged;
             else
-                Log.Warn("No session manager loaded!");
+                LoggerHelper.DebugLog(Log, _config.Data, "Init() - No session manager loaded!");
 
             Save();
+            LoggerHelper.DebugLog(Log, _config.Data, "Init() - End");
         }
 
         private void SessionChanged(ITorchSession session, TorchSessionState state)
         {
+            LoggerHelper.DebugLog(Log, _config.Data, $"SessionChanged() - Session state changed to: {state}");
 
             switch (state)
             {
-
                 case TorchSessionState.Loaded:
                     _multibase = Torch.CurrentSession.Managers.GetManager<IMultiplayerManagerBase>();
                     if (_multibase != null)
                         _multibase.PlayerJoined += multibase_PlayerJoined;
                     else
-                        Log.Warn("No multiplayer manager loaded!");
+                        LoggerHelper.DebugLog(Log, _config.Data, "SessionChanged() - No multiplayer manager loaded!");
                     break;
                 case TorchSessionState.Unloading:
                     if (_multibase != null)
@@ -70,6 +73,7 @@ namespace GPS_Organizer
 
         public void SetupConfig()
         {
+            
             var configFile = Path.Combine(StoragePath, CONFIG_FILE_NAME);
             try
             {
@@ -79,11 +83,11 @@ namespace GPS_Organizer
             {
                 Log.Warn(e);
             }
+            LoggerHelper.DebugLog(Log, _config.Data, "SetupConfig() - Start");
 
             if (_config?.Data == null)
             {
-                Log.Info("Create Default Config, because none was found!");
-
+                LoggerHelper.DebugLog(Log, _config.Data, "SetupConfig() - Creating default config");
                 _config = new Persistent<GPS_OrganizerConfig>(configFile, new GPS_OrganizerConfig());
                 _config.Save();
             }
@@ -99,47 +103,48 @@ namespace GPS_Organizer
             }
             if (_markersConfig?.Data == null)
             {
-                Log.Info("Create Default Markers Config, because none was found!");
-
+                LoggerHelper.DebugLog(Log, _config.Data, "SetupConfig() - Creating default markers config");
                 _markersConfig = new Persistent<GPS_OrganizerMarkersConfig>(markersConfigFile, new GPS_OrganizerMarkersConfig());
                 _markersConfig.Save();
             }
 
-            _gpsHandler = new GpsHandler(_markersConfig.Data);
+            _gpsHandler = new GpsHandler(_config.Data, _markersConfig.Data);
+            LoggerHelper.DebugLog(Log, _config.Data, "SetupConfig() - End");
         }
-
 
         public void Save()
         {
+            LoggerHelper.DebugLog(Log, _config.Data, "Save() - Start");
             try
             {
                 _config.Save();
                 _markersConfig.Save();
-                Log.Info("Configuration and Markers Saved.");
+                LoggerHelper.DebugLog(Log, _config.Data, "Save() - Configuration and markers saved");
             }
             catch (IOException e)
             {
-                Log.Warn(e, "Configuration and Markers failed to save");
+                Log.Warn(e, "Save() - Configuration and markers failed to save");
             }
+            LoggerHelper.DebugLog(Log, _config.Data, "Save() - End");
         }
-
 
         private void multibase_PlayerJoined(IPlayer obj)
         {
-            Log.Info(obj.State.ToString());
-            var idendity = MySession.Static.Players.TryGetIdentityId(obj.SteamId);
-            if (idendity == 0)
+            LoggerHelper.DebugLog(Log, _config.Data, $"multibase_PlayerJoined() - Player joined: {obj.SteamId}");
+            var identity = MySession.Static.Players.TryGetIdentityId(obj.SteamId);
+            if (identity == 0)
             {
-                Log.Info("Identity not found");
+                LoggerHelper.DebugLog(Log, _config.Data, "multibase_PlayerJoined() - Identity not found");
                 return;
             }
 
             if (Config.SendMarkerOnJoin)
-                _gpsHandler.SendGPSMarkers(idendity);
+                _gpsHandler.SendGPSMarkers(identity);
         }
 
         public void AddGPSMarker(string name, string description, Vector3D coords, bool ShowOnHud, bool AlwaysVisible, bool IsObjective, long EntityId, long ContractId, Color color)
         {
+            LoggerHelper.DebugLog(Log, _config.Data, $"AddGPSMarker() - Adding GPS marker: {name}");
             var gpsMarker = new MyGpsEntry
             {
                 Name = name,
@@ -163,8 +168,8 @@ namespace GPS_Organizer
             });
 
             Save();
+            LoggerHelper.DebugLog(Log, _config.Data, $"AddGPSMarker() - Marker {name} added");
         }
-
 
     }
 }

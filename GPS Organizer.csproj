@@ -207,6 +207,7 @@
     <Compile Include="GPS Organizer\Utils\ColorToMediaColorConverter.cs" />
     <Compile Include="GPS Organizer\Utils\GpsHandler.cs" />
     <Compile Include="GPS Organizer\Utils\IndexConverter.cs" />
+    <Compile Include="GPS Organizer\Utils\LoggerHelper.cs" />
     <Compile Include="GPS Organizer\Utils\MyGpsEntry.cs" />
     <Compile Include="GPS Organizer\Utils\OnParseGpsString.cs" />
     <EmbeddedResource Include="GPS Organizer\Properties\Resources.resx">
