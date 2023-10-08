@@ -61,7 +61,7 @@ namespace GPS_Organizer
 
         private void SupportButton_Click(object sender, RoutedEventArgs e)
         {
-            string discordInviteLink = "https://discord.com/invite/TqbCaHu7wr";
+            string discordInviteLink = "https://discord.gg/BUnUnXz5xJ";
             Process.Start(new ProcessStartInfo
             {
                 FileName = discordInviteLink,
