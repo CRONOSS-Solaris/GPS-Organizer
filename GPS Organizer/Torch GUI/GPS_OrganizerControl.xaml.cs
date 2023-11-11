@@ -27,7 +27,7 @@ namespace GPS_Organizer
 
         public void RefreshGpsList()
         {
-            GpsListBox.ItemsSource = _plugin.Markers.Entries;
+            GpsDataGrid.ItemsSource = _plugin.Markers.Entries;
         }
 
         private void AddGpsButton_Click(object sender, RoutedEventArgs e)
@@ -40,9 +40,9 @@ namespace GPS_Organizer
 
         private void EditGpsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (GpsListBox.SelectedItem == null) return;
+            if (GpsDataGrid.SelectedItem == null) return;
 
-            var selectedGps = GpsListBox.SelectedItem as MyGpsEntry;
+            var selectedGps = GpsDataGrid.SelectedItem as MyGpsEntry;
             var editGpsDialog = new AddGpsDialog(selectedGps);
             editGpsDialog.GpsDataUpdated += EditGpsDialog_GpsDataUpdated;
             editGpsDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -51,9 +51,9 @@ namespace GPS_Organizer
 
         private void DeleteGpsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (GpsListBox.SelectedItem == null) return;
+            if (GpsDataGrid.SelectedItem == null) return;
 
-            var selectedGps = GpsListBox.SelectedItem as MyGpsEntry;
+            var selectedGps = GpsDataGrid.SelectedItem as MyGpsEntry;
             _plugin.Markers.Entries.Remove(selectedGps);
             _plugin.Save();
             RefreshGpsList();
@@ -71,9 +71,9 @@ namespace GPS_Organizer
 
         private void EditGpsDialog_GpsDataUpdated(object sender, GpsDataEventArgs e)
         {
-            if (GpsListBox.SelectedItem == null) return;
+            if (GpsDataGrid.SelectedItem == null) return;
 
-            var selectedGps = GpsListBox.SelectedItem as MyGpsEntry;
+            var selectedGps = GpsDataGrid.SelectedItem as MyGpsEntry;
 
             // Usuń stary wpis z listy
             _plugin.Markers.Entries.Remove(selectedGps);
