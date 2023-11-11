@@ -35,7 +35,7 @@
                        ColumnSizer="Star">
             <syncfusion:SfDataGrid.Columns>
                 <!-- Kolumna dla koloru z ustaloną szerokością -->
-                <syncfusion:GridTemplateColumn HeaderText="C" Width="25">
+                <syncfusion:GridTemplateColumn HeaderText="C" Width="25" AllowSorting="False" AllowFiltering="False">
                     <syncfusion:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Rectangle Width="14" Height="14" Fill="{Binding Color, Converter={StaticResource colorConverter}}" Stroke="White" StrokeThickness="1" RadiusX="8" RadiusY="8"/>
