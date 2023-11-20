@@ -13,7 +13,6 @@ using Torch.Session;
 using VRageMath;
 using Torch.Commands;
 using GPS_Organizer.Utils;
-using Syncfusion.Licensing;
 
 namespace GPS_Organizer
 {
@@ -49,7 +48,6 @@ namespace GPS_Organizer
                 LoggerHelper.DebugLog(Log, _config.Data, "Init() - No session manager loaded!");
 
             Save();
-            SyncfusionLicenseProvider.RegisterLicense("MjgwODY4M0AzMjMzMmUzMDJlMzBJbm14elhRYTJPMzZYb2F4b0s0VlN6bHZiWHlKTktSYWtva0QzVHRhYzN3PQ==");
             LoggerHelper.DebugLog(Log, _config.Data, "Init() - End");
         }
 

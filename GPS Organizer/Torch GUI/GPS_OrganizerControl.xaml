@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
              xmlns:local="clr-namespace:GPS_Organizer.Utils"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -25,30 +24,39 @@
         <Label Content="SEND MARKER ON JOIN PLAYER:" HorizontalAlignment="Left" Margin="434,6,0,0" VerticalAlignment="Top" Height="28" FontSize="14" Width="230" FontWeight="Bold"/>
         <ToggleButton x:Name="SendMarkerOnJoinToggleButton" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle1}" Checked="SendMarkerOnJoinToggleButton_Checked" Unchecked="SendMarkerOnJoinToggleButton_Unchecked" Margin="659,12,0,0" Width="60" Height="20" IsChecked="{Binding SendMarkerOnJoin}" />
 
-        <syncfusion:SfDataGrid x:Name="GpsDataGrid" 
-                       Margin="10,40,10,10"
-                       AutoGenerateColumns="False"
-                       AllowSorting="True"
-                       AllowFiltering="True"
-                       ItemsSource="{Binding}"
-                       RowHeight="20"
-                       ColumnSizer="Star">
-            <syncfusion:SfDataGrid.Columns>
+        <DataGrid x:Name="GpsDataGrid" 
+          Margin="10,40,10,10"
+          AutoGenerateColumns="False"
+          CanUserSortColumns="True"
+          ItemsSource="{Binding}"
+          RowHeight="20">
+
+            <DataGrid.Resources>
+                <!-- Styl dla nagłówka kolumny -->
+                <Style x:Key="CenterHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
                 <!-- Kolumna dla koloru z ustaloną szerokością -->
-                <syncfusion:GridTemplateColumn HeaderText="C" Width="25" AllowSorting="False" AllowFiltering="False">
-                    <syncfusion:GridTemplateColumn.CellTemplate>
+                <DataGridTemplateColumn Header="C" Width="25">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Rectangle Width="14" Height="14" Fill="{Binding Color, Converter={StaticResource colorConverter}}" Stroke="White" StrokeThickness="1" RadiusX="8" RadiusY="8"/>
                         </DataTemplate>
-                    </syncfusion:GridTemplateColumn.CellTemplate>
-                </syncfusion:GridTemplateColumn>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                <!-- Kolumny dla danych, które dostosują swoją szerokość -->
-                <syncfusion:GridTextColumn MappingName="Name" HeaderText="NAME"/>
-                <syncfusion:GridTextColumn MappingName="Coords" HeaderText="COORDS"/>
-                <syncfusion:GridTextColumn MappingName="Description" HeaderText="DESCRIPTION" TextWrapping="Wrap"/>
-            </syncfusion:SfDataGrid.Columns>
-        </syncfusion:SfDataGrid>
+                <!-- Kolumny dla danych, rozciągnięte równomiernie na dostępną przestrzeń -->
+                <DataGridTextColumn Binding="{Binding Name}" Header="NAME" Width="*" HeaderStyle="{StaticResource CenterHeaderStyle}"/>
+                <DataGridTextColumn Binding="{Binding Coords}" Header="COORDS" Width="*" HeaderStyle="{StaticResource CenterHeaderStyle}"/>
+
+                <!-- Kolumna DESCRIPTION z tekstem nagłówka wyśrodkowanym -->
+                <DataGridTextColumn Binding="{Binding Description}" Header="DESCRIPTION" Width="*" HeaderStyle="{StaticResource CenterHeaderStyle}"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 </UserControl>
