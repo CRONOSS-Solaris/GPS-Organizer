@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using VRageMath;
 
 namespace GPS_Organizer
@@ -12,7 +10,18 @@ namespace GPS_Organizer
         public string Name { get; set; }
         public string Description { get; set; }
         public Vector3D Coords { get; set; }
+
+        [XmlIgnore]
         public TimeSpan? DiscardAt { get; set; }
+
+        // Serialized as a string for XML, include even if null
+        [XmlElement("DiscardAt", IsNullable = true)]
+        public string DiscardAtString
+        {
+            get => DiscardAt.HasValue ? XmlConvert.ToString(DiscardAt.Value) : null;
+            set => DiscardAt = string.IsNullOrEmpty(value) ? (TimeSpan?)null : XmlConvert.ToTimeSpan(value);
+        }
+
         public bool ShowOnHud { get; set; }
         public bool AlwaysVisible { get; set; }
         public Color Color { get; set; }
@@ -21,5 +30,4 @@ namespace GPS_Organizer
         public long ContractId { get; set; }
         public string DisplayName { get; set; }
     }
-
 }

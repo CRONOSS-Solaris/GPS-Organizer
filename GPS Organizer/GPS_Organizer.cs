@@ -142,21 +142,21 @@ namespace GPS_Organizer
                 _gpsHandler.SendGPSMarkers(identity);
         }
 
-        public void AddGPSMarker(string name, string description, Vector3D coords, bool ShowOnHud, bool AlwaysVisible, bool IsObjective, long EntityId, long ContractId, Color color)
+        public void AddGPSMarker(string name, string description, Vector3D coords, bool showOnHud, bool alwaysVisible, bool isObjective, long entityId, long contractId, Color color, TimeSpan? discardAt)
         {
-            LoggerHelper.DebugLog(Log, _config.Data, $"AddGPSMarker() - Adding GPS marker: {name}");
+
             var gpsMarker = new MyGpsEntry
             {
                 Name = name,
                 Description = description,
                 Coords = coords,
-                DiscardAt = null,
-                ShowOnHud = ShowOnHud,
-                AlwaysVisible = AlwaysVisible,
+                DiscardAt = discardAt,
+                ShowOnHud = showOnHud,
+                AlwaysVisible = alwaysVisible,
                 Color = color,
-                EntityId = EntityId,
-                IsObjective = IsObjective,
-                ContractId = ContractId,
+                EntityId = entityId,
+                IsObjective = isObjective,
+                ContractId = contractId,
                 DisplayName = name
             };
 

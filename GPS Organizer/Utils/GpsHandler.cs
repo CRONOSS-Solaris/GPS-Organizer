@@ -48,16 +48,16 @@ namespace GPS_Organizer
                     IsObjective = entry.IsObjective,
                     ContractId = entry.ContractId,
                     DisplayName = entry.DisplayName,
-
                 };
 
-
-                LoggerHelper.DebugLog(Log, _config, $"SendGPSMarkers() - Creating marker: {entry.Name}");
+                // Log details of the GPS marker being sent
+                LoggerHelper.DebugLog(Log, _config, $"SendGPSMarkers() - Preparing to send marker: {gps.Name}, Description: {gps.Description}, Coords: {gps.Coords}, DiscardAt: {gps.DiscardAt}");
 
                 // Send the GPS marker to the player with the specified identity ID.
                 MyAPIGateway.Session?.GPS.AddGps(identityId, gps);
 
-                LoggerHelper.DebugLog(Log, _config, $"SendGPSMarkers() - Sent marker: {entry.Name}");
+                // Log the action of sending the marker
+                LoggerHelper.DebugLog(Log, _config, $"SendGPSMarkers() - Marker '{gps.Name}' sent to identity ID: {identityId}");
             }
 
             LoggerHelper.DebugLog(Log, _config, $"SendGPSMarkers() - Finished sending markers for identity: {identityId}");

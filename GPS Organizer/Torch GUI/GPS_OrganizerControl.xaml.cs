@@ -1,4 +1,5 @@
 ﻿using GPS_Organizer;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -84,6 +85,7 @@ namespace GPS_Organizer
                 Name = e.GpsData.Name,
                 Description = e.GpsData.Description,
                 Coords = e.GpsData.Coords,
+                DiscardAt = e.GpsData.DiscardAt,
                 ShowOnHud = e.GpsData.ShowOnHud,
                 AlwaysVisible = e.GpsData.AlwaysVisible,
                 IsObjective = e.GpsData.IsObjective,
@@ -106,9 +108,14 @@ namespace GPS_Organizer
             // Dodaj nowy GPS do listy, używając danych z e.GpsData
             // Na przykład:
             var gpsData = e.GpsData;
-            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud, gpsData.AlwaysVisible, gpsData.IsObjective, gpsData.EntityId, gpsData.ContractId, gpsData.Color);
+
+            // Assuming discardAt is null for permanent markers
+            TimeSpan? discardAt = null;
+
+            _plugin.AddGPSMarker(gpsData.Name, gpsData.Description, gpsData.Coords, gpsData.ShowOnHud, gpsData.AlwaysVisible, gpsData.IsObjective, gpsData.EntityId, gpsData.ContractId, gpsData.Color, gpsData.DiscardAt);
             _plugin.Save();
         }
+
 
         private void SendMarkerOnJoinToggleButton_Checked(object sender, RoutedEventArgs e)
         {

@@ -46,6 +46,9 @@ namespace GPS_Organizer
                     G = _selectedGps.Color.G,
                     B = _selectedGps.Color.B
                 };
+                DiscardAtTimePicker.Value = _selectedGps.DiscardAt.HasValue
+                    ? DateTime.Today.Add(_selectedGps.DiscardAt.Value)
+                    : (DateTime?)null;
             }
             else
             {
@@ -94,11 +97,14 @@ namespace GPS_Organizer
                 vrageColor = VRageMath.Color.White; // default value or another color you'd like
             }
 
+            TimeSpan? discardAt = DiscardAtTimePicker.Value?.TimeOfDay;
+
             var gpsData = new GpsData
             {
                 Name = NameTextBox.Text,
                 Description = DescriptionTextBox.Text,
                 Coords = new Vector3D(x, y, z),
+                DiscardAt = (TimeSpan)discardAt,
                 ShowOnHud = ShowOnHudCheckBox.IsChecked.GetValueOrDefault(),
                 AlwaysVisible = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
                 IsObjective = IsObjectiveCheckBox.IsChecked.GetValueOrDefault(),
@@ -172,6 +178,7 @@ namespace GPS_Organizer
             public string Name { get; set; }
             public Vector3D Coords { get; set; }
             public string Description { get; set; }
+            public TimeSpan DiscardAt { get; set; }
             public bool ShowOnHud { get; set; }
             public bool AlwaysVisible { get; set; }
             public bool IsObjective { get; set; }

@@ -52,7 +52,7 @@ namespace GPS_Organizer
 
         [Command("add", "Add a new GPS marker.")]
         [Permission(MyPromoteLevel.Admin)]
-        public void AddGPSMarker(string name, string description, string colorCode = null, bool showOnHud = true, bool alwaysVisible = false, bool isObjective = false, long entityId = 0, long contractId = 0)
+        public void AddGPSMarker(string name, string description, string colorCode = null, bool showOnHud = true, bool alwaysVisible = false, bool isObjective = false, long entityId = 0, long contractId = 0, string discardAtString = null)
         {
             var gpsOrganizerPlugin = (GpsOrganizerPlugin)Context.Plugin;
             var coords = Context.Player.GetPosition(); // Get the player's current position as the GPS marker coordinates
@@ -60,12 +60,28 @@ namespace GPS_Organizer
             // If a color code is provided, convert it to Color, otherwise use a default color
             var color = colorCode != null ? HexToColor(colorCode) : new Color(255, 255, 255);
 
+            // Parse DiscardAt if provided
+            TimeSpan? discardAt = null;
+            if (!string.IsNullOrEmpty(discardAtString))
+            {
+                if (TimeSpan.TryParse(discardAtString, out var parsedTimeSpan))
+                {
+                    discardAt = parsedTimeSpan;
+                }
+                else
+                {
+                    RespondWithAuthor($"Invalid DiscardAt format. Please provide a valid TimeSpan string.");
+                    return;
+                }
+            }
+
             // Add the new GPS marker
-            gpsOrganizerPlugin.AddGPSMarker(name, description, coords, showOnHud, alwaysVisible, isObjective, entityId, contractId, color);
+            gpsOrganizerPlugin.AddGPSMarker(name, description, coords, showOnHud, alwaysVisible, isObjective, entityId, contractId, color, discardAt);
 
             // Notify the player that the GPS marker has been added
             RespondWithAuthor($"GPS marker '{name}' has been added with description '{description}'.");
         }
+
 
         [Command("list", "Show the entire list of GPS markers.")]
         [Permission(MyPromoteLevel.Admin)]
