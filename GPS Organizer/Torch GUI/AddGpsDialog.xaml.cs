@@ -104,7 +104,7 @@ namespace GPS_Organizer
                 Name = NameTextBox.Text,
                 Description = DescriptionTextBox.Text,
                 Coords = new Vector3D(x, y, z),
-                DiscardAt = (TimeSpan)discardAt,
+                DiscardAt = discardAt,
                 ShowOnHud = ShowOnHudCheckBox.IsChecked.GetValueOrDefault(),
                 AlwaysVisible = AlwaysVisibleCheckBox.IsChecked.GetValueOrDefault(),
                 IsObjective = IsObjectiveCheckBox.IsChecked.GetValueOrDefault(),
@@ -178,7 +178,7 @@ namespace GPS_Organizer
             public string Name { get; set; }
             public Vector3D Coords { get; set; }
             public string Description { get; set; }
-            public TimeSpan DiscardAt { get; set; }
+            public TimeSpan? DiscardAt { get; set; }
             public bool ShowOnHud { get; set; }
             public bool AlwaysVisible { get; set; }
             public bool IsObjective { get; set; }
