@@ -117,7 +117,7 @@ namespace GPS_Organizer
         {
             if (string.IsNullOrWhiteSpace(playerName))
             {
-                RespondWithAuthor("Usage: !gpsadmin send <playerName>");
+                RespondWithAuthor($"Usage: {GpsCommandFallbacks.CommandPrefix}gpsadmin send <playerName>");
                 return;
             }
 
@@ -131,24 +131,57 @@ namespace GPS_Organizer
 
             if (identityId == 0 && MySession.Static?.Players != null)
             {
-                var matches = new List<MyIdentity>();
-                foreach (var ident in MySession.Static.Players.GetAllIdentities())
+                var players = MySession.Static.Players;
+
+                var onlineMatches = new List<MyPlayer>();
+                foreach (var player in players.GetOnlinePlayers())
                 {
-                    if (ident?.DisplayName != null &&
-                        string.Equals(ident.DisplayName, resolvedName, StringComparison.OrdinalIgnoreCase))
-                        matches.Add(ident);
+                    if (player == null || player.Identity == null)
+                        continue;
+                    if (players.TryGetSteamId(player.Identity.IdentityId) == 0)
+                        continue;
+                    if (string.Equals(player.DisplayName, resolvedName, StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(player.Identity.DisplayName, resolvedName, StringComparison.OrdinalIgnoreCase))
+                        onlineMatches.Add(player);
                 }
 
-                if (matches.Count > 1)
+                if (onlineMatches.Count > 1)
                 {
                     RespondWithAuthor($"Multiple identities match '{resolvedName}'. Please use the player's Steam ID.");
                     return;
                 }
 
-                if (matches.Count == 1)
+                if (onlineMatches.Count == 1)
                 {
-                    identityId = matches[0].IdentityId;
-                    resolvedName = matches[0].DisplayName;
+                    identityId = onlineMatches[0].Identity.IdentityId;
+                    resolvedName = !string.IsNullOrEmpty(onlineMatches[0].DisplayName)
+                        ? onlineMatches[0].DisplayName
+                        : onlineMatches[0].Identity.DisplayName;
+                }
+                else
+                {
+                    var matches = new List<MyIdentity>();
+                    foreach (var ident in players.GetAllIdentities())
+                    {
+                        if (ident?.DisplayName == null)
+                            continue;
+                        if (players.TryGetSteamId(ident.IdentityId) == 0)
+                            continue;
+                        if (string.Equals(ident.DisplayName, resolvedName, StringComparison.OrdinalIgnoreCase))
+                            matches.Add(ident);
+                    }
+
+                    if (matches.Count > 1)
+                    {
+                        RespondWithAuthor($"Multiple identities match '{resolvedName}'. Please use the player's Steam ID.");
+                        return;
+                    }
+
+                    if (matches.Count == 1)
+                    {
+                        identityId = matches[0].IdentityId;
+                        resolvedName = matches[0].DisplayName;
+                    }
                 }
             }
 
@@ -253,6 +286,11 @@ namespace GPS_Organizer
         private static IChatManagerServer _chatManager;
         private static CommandManager _commandManager;
 
+        internal static char CommandPrefix
+        {
+            get { return _commandManager != null ? _commandManager.Prefix : '!'; }
+        }
+
         public static void Subscribe(ITorchSession session)
         {
             Unsubscribe();
@@ -280,7 +318,7 @@ namespace GPS_Organizer
             if (_chatManager == null || string.IsNullOrEmpty(msg.Message))
                 return;
 
-            var prefix = _commandManager != null ? _commandManager.Prefix : '!';
+            var prefix = CommandPrefix;
             if (msg.Message[0] != prefix)
                 return;
 
@@ -300,7 +338,10 @@ namespace GPS_Organizer
                 return;
 
             consumed = true;
-            _chatManager.SendMessageAsOther("GPS Organizer", FormatReply(category, unknown), default(Color), msg.AuthorSteamId.Value);
+            var promoteLevel = MySession.Static != null
+                ? MySession.Static.GetUserPromoteLevel(msg.AuthorSteamId.Value)
+                : MyPromoteLevel.None;
+            _chatManager.SendMessageAsOther("GPS Organizer", FormatReply(category, unknown, promoteLevel), default(Color), msg.AuthorSteamId.Value);
         }
 
         private static bool IsGpsCategory(string category)
@@ -311,17 +352,18 @@ namespace GPS_Organizer
 
         private static bool IsValidSubcommand(string category, string subcommand)
         {
-            foreach (var name in GetValidSubcommands(category))
+            foreach (var name in GetValidSubcommands(category, null))
             {
-                if (string.Equals(name, subcommand, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(name, subcommand, StringComparison.Ordinal))
                     return true;
             }
             return false;
         }
 
-        private static List<string> GetValidSubcommands(string category)
+        private static List<string> GetValidSubcommands(string category, MyPromoteLevel? promoteLevel)
         {
             var names = new List<string>();
+            var lookedUpTree = false;
             if (_commandManager != null)
             {
                 CommandTree.CommandNode node;
@@ -334,21 +376,28 @@ namespace GPS_Organizer
                 }
                 if (node != null)
                 {
+                    lookedUpTree = true;
                     foreach (var child in node.GetChildren())
                     {
-                        if (child.IsCommand)
-                            names.Add(child.Name);
+                        if (!child.IsCommand)
+                            continue;
+                        if (promoteLevel.HasValue && promoteLevel.Value < child.Command.MinimumPromoteLevel)
+                            continue;
+                        names.Add(child.Name);
                     }
                 }
             }
-            if (names.Count == 0)
+            if (!lookedUpTree && names.Count == 0)
             {
                 if (string.Equals(category, "gpsadmin", StringComparison.OrdinalIgnoreCase))
                 {
-                    names.Add("add");
-                    names.Add("edit");
-                    names.Add("list");
-                    names.Add("send");
+                    if (!promoteLevel.HasValue || promoteLevel.Value >= MyPromoteLevel.Admin)
+                    {
+                        names.Add("add");
+                        names.Add("edit");
+                        names.Add("list");
+                        names.Add("send");
+                    }
                 }
                 else
                 {
@@ -359,16 +408,23 @@ namespace GPS_Organizer
             return names;
         }
 
-        private static string FormatReply(string category, string unknown)
+        private static string FormatReply(string category, string unknown, MyPromoteLevel promoteLevel)
         {
+            var prefix = CommandPrefix;
             var listItems = new List<string>();
-            foreach (var name in GetValidSubcommands(category))
-                listItems.Add("!" + category + " " + name);
-            var list = listItems.Count > 0 ? string.Join(", ", listItems) : "(none)";
+            foreach (var name in GetValidSubcommands(category, promoteLevel))
+                listItems.Add(prefix + category + " " + name);
+            var list = listItems.Count > 0 ? string.Join(", ", listItems) : null;
 
             if (string.IsNullOrEmpty(unknown))
-                return $"Usage: !{category} <command>. Valid commands: {list}.";
-            return $"Unknown command '!{category} {unknown}'. Valid commands: {list}.";
+            {
+                if (list == null)
+                    return $"Usage: {prefix}{category} <command>.";
+                return $"Usage: {prefix}{category} <command>. Valid commands: {list}.";
+            }
+            if (list == null)
+                return $"Unknown command '{prefix}{category} {unknown}'.";
+            return $"Unknown command '{prefix}{category} {unknown}'. Valid commands: {list}.";
         }
     }
 }

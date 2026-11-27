@@ -250,6 +250,9 @@ namespace GPS_Organizer
             if (obj == null)
                 return;
 
+            byte stale;
+            _sentThisConnection.TryRemove(obj.SteamId, out stale);
+
             LoggerHelper.DebugLog(Log, _config.Data, $"multibase_PlayerJoined() - Player joined: {obj.SteamId}");
 
             if (Config == null || !Config.SendMarkerOnJoin)
@@ -280,54 +283,61 @@ namespace GPS_Organizer
 
         private void TryDeliverPending(ulong steamId, string trigger)
         {
-            if (_sessionUnloading)
-                return;
-
-            if (Config == null || !Config.SendMarkerOnJoin)
+            try
             {
-                PendingMarkerSend discarded;
-                _pendingMarkerSends.TryRemove(steamId, out discarded);
-                return;
-            }
+                if (_sessionUnloading)
+                    return;
 
-            if (_sentThisConnection.ContainsKey(steamId))
+                if (Config == null || !Config.SendMarkerOnJoin)
+                {
+                    PendingMarkerSend discarded;
+                    _pendingMarkerSends.TryRemove(steamId, out discarded);
+                    return;
+                }
+
+                if (_sentThisConnection.ContainsKey(steamId))
+                {
+                    PendingMarkerSend alreadySent;
+                    _pendingMarkerSends.TryRemove(steamId, out alreadySent);
+                    return;
+                }
+
+                PendingMarkerSend pending;
+                _pendingMarkerSends.TryGetValue(steamId, out pending);
+
+                string reason;
+                if (TrySendMarkers(steamId, out reason))
+                {
+                    _sentThisConnection[steamId] = 0;
+                    _pendingMarkerSends.TryRemove(steamId, out pending);
+                    var name = pending != null && !string.IsNullOrEmpty(pending.Name) ? pending.Name : ResolvePlayerName(steamId);
+                    Log.Info($"GPS Organizer: sent markers to {name} ({steamId}) via {trigger}.");
+                    return;
+                }
+
+                if (pending == null)
+                    return;
+
+                var elapsed = DateTime.UtcNow - pending.QueuedAtUtc;
+                if (elapsed.TotalMinutes >= PendingRetryTimeoutMinutes)
+                {
+                    _pendingMarkerSends.TryRemove(steamId, out pending);
+                    Log.Warn($"GPS Organizer: timed out after {PendingRetryTimeoutMinutes} minutes waiting to send markers to {pending.Name} ({steamId}): {reason}.");
+                    return;
+                }
+
+                if (!pending.QueuedLogged)
+                {
+                    pending.QueuedLogged = true;
+                    Log.Info($"GPS Organizer: queued marker send for {pending.Name} ({steamId}): {reason}. Retrying until the player is online or {PendingRetryTimeoutMinutes} minutes elapse.");
+                }
+                else
+                    LoggerHelper.DebugLog(Log, _config.Data, $"TryDeliverPending() - still waiting for {pending.Name} ({steamId}): {reason}");
+            }
+            catch (Exception e)
             {
-                PendingMarkerSend alreadySent;
-                _pendingMarkerSends.TryRemove(steamId, out alreadySent);
-                return;
+                Log.Error(e, $"GPS Organizer: failed to deliver markers to {steamId} via {trigger}.");
             }
-
-            PendingMarkerSend pending;
-            _pendingMarkerSends.TryGetValue(steamId, out pending);
-
-            string reason;
-            if (TrySendMarkers(steamId, out reason))
-            {
-                _sentThisConnection[steamId] = 0;
-                _pendingMarkerSends.TryRemove(steamId, out pending);
-                var name = pending != null && !string.IsNullOrEmpty(pending.Name) ? pending.Name : ResolvePlayerName(steamId);
-                Log.Info($"GPS Organizer: sent markers to {name} ({steamId}) via {trigger}.");
-                return;
-            }
-
-            if (pending == null)
-                return;
-
-            var elapsed = DateTime.UtcNow - pending.QueuedAtUtc;
-            if (elapsed.TotalMinutes >= PendingRetryTimeoutMinutes)
-            {
-                _pendingMarkerSends.TryRemove(steamId, out pending);
-                Log.Warn($"GPS Organizer: timed out after {PendingRetryTimeoutMinutes} minutes waiting to send markers to {pending.Name} ({steamId}): {reason}.");
-                return;
-            }
-
-            if (!pending.QueuedLogged)
-            {
-                pending.QueuedLogged = true;
-                Log.Info($"GPS Organizer: queued marker send for {pending.Name} ({steamId}): {reason}. Retrying until the player is online or {PendingRetryTimeoutMinutes} minutes elapse.");
-            }
-            else
-                LoggerHelper.DebugLog(Log, _config.Data, $"TryDeliverPending() - still waiting for {pending.Name} ({steamId}): {reason}");
         }
 
         private bool TrySendMarkers(ulong steamId, out string reason)
@@ -404,8 +414,9 @@ namespace GPS_Organizer
 
             _gpsHandler.SendGPSMarkers(identityId);
 
-            var steamId = MySession.Static?.Players?.TryGetSteamId(identityId) ?? 0;
-            if (steamId != 0)
+            var players = MySession.Static?.Players;
+            var steamId = players?.TryGetSteamId(identityId) ?? 0;
+            if (steamId != 0 && players.IsPlayerOnline(identityId))
             {
                 _sentThisConnection[steamId] = 0;
                 PendingMarkerSend pending;
@@ -437,7 +448,8 @@ namespace GPS_Organizer
             // Use Dispatcher.Invoke to modify ObservableCollection on the UI thread
             _control.Dispatcher.Invoke(() =>
             {
-                _markersConfig.Data.Entries.Add(gpsMarker);
+                lock (_markersConfig.Data.EntriesLock)
+                    _markersConfig.Data.Entries.Add(gpsMarker);
                 _control.RefreshGpsList();
             });
 

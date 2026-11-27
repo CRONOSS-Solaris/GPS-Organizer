@@ -33,7 +33,8 @@ namespace GPS_Organizer
                 return;
             }
 
-            foreach (var entry in _markersConfig.Entries)
+            var entries = _markersConfig.GetEntriesSnapshot();
+            foreach (var entry in entries)
             {
                 var gps = new MyGps
                 {

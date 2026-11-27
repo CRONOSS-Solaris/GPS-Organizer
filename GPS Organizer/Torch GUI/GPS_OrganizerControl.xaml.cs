@@ -55,7 +55,8 @@ namespace GPS_Organizer
             if (GpsDataGrid.SelectedItem == null) return;
 
             var selectedGps = GpsDataGrid.SelectedItem as MyGpsEntry;
-            _plugin.Markers.Entries.Remove(selectedGps);
+            lock (_plugin.Markers.EntriesLock)
+                _plugin.Markers.Entries.Remove(selectedGps);
             _plugin.Save();
             RefreshGpsList();
         }
@@ -76,9 +77,6 @@ namespace GPS_Organizer
 
             var selectedGps = GpsDataGrid.SelectedItem as MyGpsEntry;
 
-            // Usuń stary wpis z listy
-            _plugin.Markers.Entries.Remove(selectedGps);
-
             // Stwórz nowy wpis z zaktualizowanymi danymi
             var updatedGps = new MyGpsEntry
             {
@@ -94,8 +92,12 @@ namespace GPS_Organizer
                 Color = e.GpsData.Color,
             };
 
-            // Dodaj zaktualizowany wpis do listy
-            _plugin.Markers.Entries.Add(updatedGps);
+            // Usuń stary wpis i dodaj zaktualizowany pod tym samym lockiem co SendGPSMarkers
+            lock (_plugin.Markers.EntriesLock)
+            {
+                _plugin.Markers.Entries.Remove(selectedGps);
+                _plugin.Markers.Entries.Add(updatedGps);
+            }
 
             _plugin.Save();
             RefreshGpsList();
